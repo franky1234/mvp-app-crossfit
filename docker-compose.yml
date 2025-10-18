@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - '8000:8000'
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:90'
+    depends_on:
+      - backend

@@ -1,0 +1,43 @@
+# Node
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+env/
+ENV/
+
+# Virtualenv created by various tools
+.venv/
+venv/
+
+# Environment files
+.env
+.env.*
+*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Logs
+.log
+
+# Docker
+docker-compose.override.yml
+
+# Frontend
+/.vite/
+/.cache/
