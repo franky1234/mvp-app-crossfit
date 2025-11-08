@@ -23,16 +23,21 @@ app.add_middleware(
 
 @app.post("/generate", response_model=RoutineResponse)
 async def generate(r: RoutineRequest):
-    api_key = os.getenv('OPENAI_API_KEY')
-    if not api_key:
-        raise HTTPException(status_code=500, detail="OPENAI_API_KEY not set on server")
+    # API key is optional now; Ollama does not require it. Preserve env read for compatibility.
+    api_key = os.getenv('OPENAI_API_KEY', '')
 
     prompt = (
-        f"Genera una rutina de CrossFit de {r.duration_minutes} minutos para nivel {r.level}. "
-        f"Objetivos: {r.goals}. Devuelve un JSON válido con los campos: title, duration_minutes, level, "
-        "warmup (lista), exercises (lista de objetos con name, sets, reps_or_time, rest_seconds, notes), "
-        "cooldown (lista), modifications (con secciones para principiante y avanzado). "
-        "Si no puedes generar JSON válido, responde únicamente con: {\"error\": \"No JSON\"}."
+        f"Crea una rutina CrossFit de {r.duration_minutes} min, nivel {r.level}. Objetivo: {r.goals}.\n"
+        f"Responde SOLO con JSON válido:\n"
+        f"{{"
+        f'  "title": "nombre de la rutina",\n'
+        f'  "duration_minutes": {r.duration_minutes},\n'
+        f'  "level": "{r.level}",\n'
+        f'  "warmup": ["ejercicio1", "ejercicio2"],\n'
+        f'  "exercises": [{{"name": "ejercicio", "sets": 3, "reps_or_time": "10 reps", "rest_seconds": 60}}],\n'
+        f'  "cooldown": ["ejercicio1"],\n'
+        f'  "modifications": {{"principiante": "texto", "avanzado": "texto"}}\n'
+        f"}}"
     )
 
     try:

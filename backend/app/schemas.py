@@ -1,10 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 class Exercise(BaseModel):
     name: str
     sets: int
-    reps_or_time: str
+    reps_or_time: Union[str, int]
     rest_seconds: Optional[int] = None
     notes: Optional[str] = None
 
@@ -17,8 +17,8 @@ class RoutineResponse(BaseModel):
     title: str
     duration_minutes: int
     level: str
-    warmup: List[str]
+    warmup: List[Union[str, dict]]
     exercises: List[Exercise]
-    cooldown: List[str]
+    cooldown: List[Union[str, dict]]
     modifications: dict
     raw_text: Optional[str] = None
